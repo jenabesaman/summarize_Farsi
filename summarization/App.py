@@ -2,8 +2,8 @@ import os
 from flask import Flask, request, jsonify, Response
 # import Language
 import sys
+# import ConvertSTRToTXT
 import summarizer
-
 sys.path.append('./Summarize')
 
 
@@ -33,8 +33,8 @@ def ping():
 
 
 
-@app.route("/summarize", methods=["post"])
-def summarizing():
+@app.route("/summarize_fa", methods=["post"])
+def summarizing_fa():
     try:
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
         data = request.get_json(force=True)
@@ -42,8 +42,8 @@ def summarizing():
         text = data["text"]
         # text2='"'+'"'+'"'+text+'"'+'"'+'"'
         # print(text)
-        ConvertSTRToTXT.converting(text)
-        summarize = main.summarize(filename="Summarize/text.txt")
+        # ConvertSTRToTXT.converting(text)
+        summarize = summarizer.summarize(text=text,word_count=50)
         # result = obj.handeling()
         # return jsonify({'result': summarize})
         return jsonify({'result': summarize})
@@ -110,4 +110,4 @@ def summarizing():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=44323, use_reloader=False)
+    app.run(debug=True, host='0.0.0.0',  use_reloader=False)
