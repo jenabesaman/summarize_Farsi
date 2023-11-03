@@ -110,4 +110,4 @@ def summarizing_fa():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0',  use_reloader=False)
+    app.run(debug=True, host='0.0.0.0',port=8535 , use_reloader=False)
