@@ -9,7 +9,6 @@ from gensim.summarization.textcleaner import clean_text_by_sentences as _clean_t
 from gensim.summarization.commons import build_graph as _build_graph
 from gensim.summarization.commons import remove_unreachable_nodes as _remove_unreachable_nodes
 from gensim.summarization.bm25 import get_bm25_weights as _bm25_weights
-# from gensim.summarization.bm25 import get_w2v_weights as _w2v_weights
 from gensim.models import Word2Vec
 from gensim.corpora import Dictionary
 from math import log10 as _log10
@@ -22,61 +21,6 @@ WEIGHT_THRESHOLD = 1.e-3
 
 logger = logging.getLogger(__name__)
 
-
-# def _set_graph_edge_weights(graph,sentences):
-#     documents = graph.nodes()
-#     # weights = _w2v_weights(documents,sentences)
-#     weights = Word2Vec(documents, sentences)
-#
-#     for i in xrange(len(documents)):
-#         for j in xrange(len(documents)):
-#             if i == j or weights[i][j] < WEIGHT_THRESHOLD:
-#                 continue
-#
-#             sentence_1 = documents[i]
-#             sentence_2 = documents[j]
-#
-#             edge_1 = (sentence_1, sentence_2)
-#             edge_2 = (sentence_2, sentence_1)
-#
-#             if not graph.has_edge(edge_1):
-#                 graph.add_edge(edge_1, weights[i][j])
-#             if not graph.has_edge(edge_2):
-#                 graph.add_edge(edge_2, weights[j][i])
-#
-#     # Handles the case in which all similarities are zero.
-#     # The resultant summary will consist of random sentences.
-#     if all(graph.edge_weight(edge) == 0 for edge in graph.edges()):
-#         _create_valid_graph(graph)
-#
-
-# def _set_graph_edge_weights(graph,sentences):
-#     documents = [doc.token.split() for doc in graph.nodes()]  # Assuming `doc` is a 'SyntacticUnit' object.
-#     sentences = [sentence.token.split() for sentence in sentences]
-#
-#     weights = Word2Vec(documents + sentences, min_count=1)
-#
-#     for i in xrange(len(documents)):
-#         for j in xrange(len(documents)):
-#             if i == j or weights[i][j] < WEIGHT_THRESHOLD:
-#                 continue
-#
-#             sentence_1 = documents[i]
-#             sentence_2 = documents[j]
-#
-#             edge_1 = (sentence_1, sentence_2)
-#             edge_2 = (sentence_2, sentence_1)
-#
-#             if not graph.has_edge(edge_1):
-#                 graph.add_edge(edge_1, weights[i][j])
-#             if not graph.has_edge(edge_2):
-#                 graph.add_edge(edge_2, weights[j][i])
-#
-#     # Handles the case in which all similarities are zero.
-#     # The resultant summary will consist of random sentences.
-#     if all(graph.edge_weight(edge) == 0 for edge in graph.edges()):
-#         _create_valid_graph(graph)
-#
 
 def _set_graph_edge_weights(graph,sentences):
     documents = [doc[0].token.split() for doc in graph.nodes() if isinstance(doc, tuple) and hasattr(doc[0], 'token')]
@@ -294,23 +238,23 @@ def summarize(text, ratio=0.2, word_count=None, split=False):
     extracted_sentences.sort(key=lambda s: s.index)
 
     return _format_results(extracted_sentences, split)
-x=summarize(text="""مطمئنا به عنوان یک توسعه دهنده با فضای گیت‌هاب آشنایی دارید و آن را به خوبی می‌شناسید. می‌دانید که گیت‌هاب بزرگ‌ترین منبع پروژه‌ها و اپلیکیشن‌های متن باز بوده و شرکت‌ها و افراد بسیار زیادی در دنیا وجود دارند که از این پلتفرم استفاده می‌کنند.
-
-گیت‌هاب بیشتر از دویست میلیون مخزن و ریپازیتوری را میزبانی می‌کند اما اگر انصاف را رعایت کنیم باید بگویم که تنها بخشی از این مخازن ارزشمند بوده و می‌توان روی استفاده کردن از آن‌ها حساب باز کرد.
-
-با تشکر از پشتیبانی گیت‌هاب از سیستم Markdown شما قابلیت آن را دارید که در کنار قرار دادن پروژه‌های‌تان در گیت‌هاب، متن‌های طولانی در حد یک کتاب را نیز در قسمت توضیحات قرار داده و خود آن نیز تبدیل به یک مخزن دیگر بشود.
-
-در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود..
-
-گیت‌هاب بیشتر از دویست میلیون مخزن و ریپازیتوری را میزبانی می‌کند اما اگر انصاف را رعایت کنیم باید بگویم که تنها بخشی از این مخازن ارزشمند بوده و می‌توان روی استفاده کردن از آن‌ها حساب باز کرد.
-
-با تشکر از پشتیبانی گیت‌هاب از سیستم Markdown شما قابلیت آن را دارید که در کنار قرار دادن پروژه‌های‌تان در گیت‌هاب، متن‌های طولانی در حد یک کتاب را نیز در قسمت توضیحات قرار داده و خود آن نیز تبدیل به یک مخزن دیگر بشود.
-
-در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود..
-
-گیت‌هاب بیشتر از دویست میلیون مخزن و ریپازیتوری را میزبانی می‌کند اما اگر انصاف را رعایت کنیم باید بگویم که تنها بخشی از این مخازن ارزشمند بوده و می‌توان روی استفاده کردن از آن‌ها حساب باز کرد.
-
-با تشکر از پشتیبانی گیت‌هاب از سیستم Markdown شما قابلیت آن را دارید که در کنار قرار دادن پروژه‌های‌تان در گیت‌هاب، متن‌های طولانی در حد یک کتاب را نیز در قسمت توضیحات قرار داده و خود آن نیز تبدیل به یک مخزن دیگر بشود.
-
-در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود.""",word_count=200,ratio=0.1)
-print(f"x={x}")
+# x=summarize(text="""مطمئنا به عنوان یک توسعه دهنده با فضای گیت‌هاب آشنایی دارید و آن را به خوبی می‌شناسید. می‌دانید که گیت‌هاب بزرگ‌ترین منبع پروژه‌ها و اپلیکیشن‌های متن باز بوده و شرکت‌ها و افراد بسیار زیادی در دنیا وجود دارند که از این پلتفرم استفاده می‌کنند.
+#
+# گیت‌هاب بیشتر از دویست میلیون مخزن و ریپازیتوری را میزبانی می‌کند اما اگر انصاف را رعایت کنیم باید بگویم که تنها بخشی از این مخازن ارزشمند بوده و می‌توان روی استفاده کردن از آن‌ها حساب باز کرد.
+#
+# با تشکر از پشتیبانی گیت‌هاب از سیستم Markdown شما قابلیت آن را دارید که در کنار قرار دادن پروژه‌های‌تان در گیت‌هاب، متن‌های طولانی در حد یک کتاب را نیز در قسمت توضیحات قرار داده و خود آن نیز تبدیل به یک مخزن دیگر بشود.
+#
+# در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود..
+#
+# گیت‌هاب بیشتر از دویست میلیون مخزن و ریپازیتوری را میزبانی می‌کند اما اگر انصاف را رعایت کنیم باید بگویم که تنها بخشی از این مخازن ارزشمند بوده و می‌توان روی استفاده کردن از آن‌ها حساب باز کرد.
+#
+# با تشکر از پشتیبانی گیت‌هاب از سیستم Markdown شما قابلیت آن را دارید که در کنار قرار دادن پروژه‌های‌تان در گیت‌هاب، متن‌های طولانی در حد یک کتاب را نیز در قسمت توضیحات قرار داده و خود آن نیز تبدیل به یک مخزن دیگر بشود.
+#
+# در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود..
+#
+# گیت‌هاب بیشتر از دویست میلیون مخزن و ریپازیتوری را میزبانی می‌کند اما اگر انصاف را رعایت کنیم باید بگویم که تنها بخشی از این مخازن ارزشمند بوده و می‌توان روی استفاده کردن از آن‌ها حساب باز کرد.
+#
+# با تشکر از پشتیبانی گیت‌هاب از سیستم Markdown شما قابلیت آن را دارید که در کنار قرار دادن پروژه‌های‌تان در گیت‌هاب، متن‌های طولانی در حد یک کتاب را نیز در قسمت توضیحات قرار داده و خود آن نیز تبدیل به یک مخزن دیگر بشود.
+#
+# در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود.""",word_count=200,ratio=0.1)
+# print(f"x={x}")

@@ -43,7 +43,7 @@ def summarizing_fa():
         # text2='"'+'"'+'"'+text+'"'+'"'+'"'
         # print(text)
         # ConvertSTRToTXT.converting(text)
-        summarize = summarizer.summarize(text=text,word_count=50)
+        summarize = summarizer.summarize(text=text,word_count=30)
         # result = obj.handeling()
         # return jsonify({'result': summarize})
         return jsonify({'result': summarize})
