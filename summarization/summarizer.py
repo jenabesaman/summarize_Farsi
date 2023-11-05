@@ -15,7 +15,7 @@ from math import log10 as _log10
 from six.moves import xrange
 
 
-INPUT_MIN_LENGTH = 10
+INPUT_MIN_LENGTH = 8
 
 WEIGHT_THRESHOLD = 1.e-3
 
@@ -206,11 +206,13 @@ def summarize(text, ratio=0.2, word_count=None, split=False):
 
     # If only one sentence is present, the function raises an error (Avoids ZeroDivisionError).
     if len(sentences) == 1:
-        raise ValueError("input must have more than one sentence")
+        return text
+        # raise ValueError("input must have more than one sentence")
 
     # Warns if the text is too short.
     if len(sentences) < INPUT_MIN_LENGTH:
-        logger.warning("Input text is expected to have at least %d sentences.", INPUT_MIN_LENGTH)
+        return text
+        # logger.warning("Input text is expected to have at least %d sentences.", INPUT_MIN_LENGTH)
 
     corpus = _build_corpus(sentences)
     
@@ -256,5 +258,8 @@ def summarize(text, ratio=0.2, word_count=None, split=False):
 #
 # با تشکر از پشتیبانی گیت‌هاب از سیستم Markdown شما قابلیت آن را دارید که در کنار قرار دادن پروژه‌های‌تان در گیت‌هاب، متن‌های طولانی در حد یک کتاب را نیز در قسمت توضیحات قرار داده و خود آن نیز تبدیل به یک مخزن دیگر بشود.
 #
-# در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود.""",word_count=200,ratio=0.1)
+# در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود.""",word_count=50,ratio=0.1)
 # print(f"x={x}")
+
+# y=summarize(text="در این مقاله از وبسایت راکت قصد داریم شما را با ۷ مخزن کاربردی گیت‌هاب آشنا کنیم که مطمئنا کار کردن با آن‌ها برای‌تان لذت‌بخش و کمکی خواهد بود.")
+# print(y)

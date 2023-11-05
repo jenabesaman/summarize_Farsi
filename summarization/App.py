@@ -40,73 +40,10 @@ def summarizing_fa():
         data = request.get_json(force=True)
         # print(data)
         text = data["text"]
-        # text2='"'+'"'+'"'+text+'"'+'"'+'"'
-        # print(text)
-        # ConvertSTRToTXT.converting(text)
-        summarize = summarizer.summarize(text=text,word_count=30)
-        # result = obj.handeling()
-        # return jsonify({'result': summarize})
+        summarize = summarizer.summarize(text=text,word_count=200)
         return jsonify({'result': summarize})
     except:
         return "cant summarize"
-
-
-# @app.route("/predict", methods=["post"])
-# def predicting():
-#     try:
-#         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-#         data = request.get_json(force=True)
-#         base64_string = data["base64_string"]
-#         obj = Predicting.Detection(base64_string=base64_string)
-#         result = obj.handeling()
-#         return jsonify({'result': result})
-#     except:
-#         return "cant predict"
-#
-#
-# @app.route("/objects", methods=["post"])
-# def classification():
-#     try:
-#         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-#         data = request.get_json(force=True)
-#         base64_string = data["base64_string"]
-#         ImObject = Classification_main.Image_Classification(base64_Image=base64_string)
-#         return jsonify({'result': ImObject})
-#     except:
-#         return "cant predict"
-
-
-# @app.route("/translate", methods=["post"])
-# def translating():
-#     try:
-#         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-#         data = request.get_json(force=True)
-#         src = str(request.args.get('src'))
-#         dest = str(request.args.get('dest'))
-#         my_dict = {}
-#         for key, value in data.items():
-#             translated = Language.translation(input_text=value, src=src, dest=dest)
-#             my_dict[key] = translated.text
-#         return my_dict
-#     except:
-#         return "cant translate"
-
-# @app.route("/summarize", methods=["post"])
-# def summarizing():
-#     try:
-#         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-#         data = request.get_json(force=True)
-#         # print(data)
-#         text = data["text"]
-#         # text2='"'+'"'+'"'+text+'"'+'"'+'"'
-#         # print(text)
-#         ConvertSTRToTXT.converting(text)
-#         summarize = main.summarize(filename="Summarize/text.txt")
-#         # result = obj.handeling()
-#         # return jsonify({'result': summarize})
-#         return jsonify({'result': summarize})
-#     except:
-#         return "cant summarize"
 
 
 if __name__ == "__main__":
